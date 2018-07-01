@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -23,9 +22,46 @@ public class ChatClient extends JFrame implements Runnable {
 
         LoginName = login;
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    mDataOutputStream.writeUTF(LoginName + " " + "LOGOUT");
+                    System.exit(1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         mJTextArea = new JTextArea(18,50);
 
         mJTextField = new JTextField(50);
+
+        mJTextField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    try {
+                        if(mJTextField.getText().length() > 0)
+                            mDataOutputStream.writeUTF(LoginName + " " + "DATA " + mJTextField.getText());
+                        mJTextField.setText("");
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
 
         Send = new JButton("Send");
 
@@ -33,7 +69,8 @@ public class ChatClient extends JFrame implements Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    mDataOutputStream.writeUTF(LoginName + " " + "DATA " + mJTextField.getText().toString());
+                    if(mJTextField.getText().length() > 0)
+                        mDataOutputStream.writeUTF(LoginName + " " + "DATA " + mJTextField.getText());
                     mJTextField.setText("");
                 } catch (IOException e1) {
                     e1.printStackTrace();
@@ -90,7 +127,4 @@ public class ChatClient extends JFrame implements Runnable {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        ChatClient mChatClient = new ChatClient("User1");
-    }
 }
