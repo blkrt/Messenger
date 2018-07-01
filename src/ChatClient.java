@@ -22,6 +22,8 @@ public class ChatClient extends JFrame implements Runnable {
 
         LoginName = login;
 
+        setResizable(false);
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -35,6 +37,8 @@ public class ChatClient extends JFrame implements Runnable {
         });
 
         mJTextArea = new JTextArea(18,50);
+        
+        mJTextArea.setFocusable(false);
 
         mJTextField = new JTextField(50);
 

@@ -32,7 +32,7 @@ public class Login {
             }
         });
 
-        enter.addKeyListener(new KeyListener() {
+        LoginName.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
 
