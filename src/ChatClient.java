@@ -37,7 +37,7 @@ public class ChatClient extends JFrame implements Runnable {
         });
 
         mJTextArea = new JTextArea(18,50);
-        
+
         mJTextArea.setFocusable(false);
 
         mJTextField = new JTextField(50);
